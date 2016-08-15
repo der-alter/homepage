@@ -5,15 +5,17 @@ require_once __DIR__.'/../vendor/autoload.php';
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel;
 
-$cache_enabled = true;
-
 $routes = include __DIR__.'/../src/app.php';
 $sc = include __DIR__.'/../src/container.php';
 
 $sc->setParameter('routes', include __DIR__.'/../src/app.php');
 $sc->setParameter('charset', 'UTF-8');
 
+$dotenv = new Dotenv\Dotenv(__DIR__.'/../');
+$dotenv->load();
+
 $request = Request::createFromGlobals();
+$cache_enabled = (bool) $request->server->get('CACHE_ENABLED', false);
 
 $framework = $sc->get('framework');
 

@@ -2,15 +2,16 @@
 
 namespace App\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
+use Silex\Application;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 
-class HomeController extends BaseController
+class HomeController
 {
-    public function indexAction(Request $request)
+    public function index(Request $request, Application $app)
     {
         $response = new Response(
-            $this->templating->render('pages/home.php')
+            $app['templating']->render('pages/home.php')
         );
 
         $response->setTtl(3600);

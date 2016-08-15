@@ -2,30 +2,35 @@
 
 require_once __DIR__.'/../vendor/autoload.php';
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel;
+use Symfony\Component\Templating\PhpEngine;
+use Symfony\Component\Templating\TemplateNameParser;
+use Symfony\Component\Templating\Loader\FilesystemLoader;
+use Symfony\Component\Asset\PathPackage;
+use Symfony\Component\Asset\VersionStrategy\EmptyVersionStrategy;
+use Symfony\Component\Templating\Helper\SlotsHelper;
 
-$routes = include __DIR__.'/../src/app.php';
-$sc = include __DIR__.'/../src/container.php';
+$app = new Silex\Application();
 
-$sc->setParameter('routes', include __DIR__.'/../src/app.php');
-$sc->setParameter('charset', 'UTF-8');
+$app['templating'] = function() {
+    $loader = new FilesystemLoader(__DIR__ . '/../src/views/%name%');
 
-$dotenv = new Dotenv\Dotenv(__DIR__.'/../');
-$dotenv->load();
+    $templating = new PhpEngine(new TemplateNameParser(), $loader);
+    $templating->set(new SlotsHelper());
 
-$request = Request::createFromGlobals();
-$cache_enabled = (bool) $request->server->get('CACHE_ENABLED', false);
+    $package = new PathPackage('/assets', new EmptyVersionStrategy());
+    $templating->addGlobal('assets', $package);
 
-$framework = $sc->get('framework');
+    return $templating;
+};
 
-if (true === $cache_enabled) {
-    $framework = new HttpKernel\HttpCache\HttpCache(
-        $framework,
-        new HttpKernel\HttpCache\Store(__DIR__.'/../cache')
-    );
-}
+$app->register(new Silex\Provider\HttpCacheServiceProvider(), array(
+    'http_cache.cache_dir' => __DIR__.'/../cache/',
+    'http_cache.esi'       => null,
+));
 
-$response = $framework->handle($request);
+$app->get('/', 'App\Controller\HomeController::index');
 
-$response->send();
+$env = getenv('APP_ENV') ?: 'prod';
+$app['debug'] = !('prod' == $env);
+
+$app['http_cache']->run();

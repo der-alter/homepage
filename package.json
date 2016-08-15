@@ -1,0 +1,46 @@
+{
+  "name": "homepage",
+  "version": "0.0.0",
+  "description": "",
+  "scripts": {
+    "clean-build": "rm -rf www/assets/*",
+    "prepare-build": "mkdir -p www/assets/images && mkdir www/assets/js && mkdir www/assets/css",
+    "build-js": "browserify assets/javascript/app.js -o www/assets/js/app.js",
+    "build-sass": "node-sass --include-path bower_components assets/sass/main.scss | postcss --use autoprefixer --autoprefixer.browsers 'last 2 versions' > www/assets/css/styles.css",
+    "build-images": "cp assets/images/* www/assets/images",
+    "build-min-js": "browserify assets/javascript/app.js | uglifyjs -o www/assets/js/app.js",
+    "build-min-sass": "node-sass assets/sass/main.scss | cleancss -o www/assets/css/styles.css",
+    "watch-js": "nodemon -e js -w assets/javascript -x 'npm run build-js'",
+    "watch-sass": "nodemon -e scss -w assets/sass -x 'npm run build-sass'",
+    "build": "npm run build-js & npm run build-sass",
+    "build-min": "npm run build-min-js & npm run build-min-sass",
+    "watch": "npm run watch-js & npm run watch-sass",
+    "browser-sync": "browser-sync start --proxy '127.0.0.1:8000' --files './www/**/*'",
+    "start": "npm run clean-build && npm run prepare-build && npm run build-images && npm run build-js && npm run build-sass & npm run watch & npm run browser-sync",
+    "production": "npm run build-min"
+  },
+  "author": "",
+  "license": "ISC",
+  "browserify": {
+    "transform": [
+      [
+        "babelify"
+      ]
+    ]
+  },
+  "dependencies": {
+    "ampersand-router": "4.0.0",
+    "react": "15.3.0",
+    "underscore": "~1.8.3"
+  },
+  "devDependencies": {
+    "browserify": "~13.1.0",
+    "node-sass": "~3.8.0",
+    "clean-css": "~3.4.19",
+    "uglifyjs": "~2.4.10",
+    "browser-sync": "~2.14.0",
+    "babelify": "~7.3.0",
+    "autoprefixer": "~6.4.0",
+    "postcss-cli": "~2.5.2"
+  }
+}

@@ -6,7 +6,9 @@
         "symfony/event-dispatcher": "^3.1",
         "symfony/dependency-injection": "^3.1",
         "symfony/templating": "^3.1",
-        "vlucas/phpdotenv": "^2.3"
+        "vlucas/phpdotenv": "^2.3",
+        "guzzlehttp/guzzle": "^6.2",
+        "symfony/asset": "^3.1"
     },
     "autoload": {
         "psr-4": { "": "src/" }

@@ -39,6 +39,8 @@
     "clean-css": "~3.4.19",
     "uglifyjs": "~2.4.10",
     "browser-sync": "~2.14.0",
+    "babel-preset-es2015": "6.14.0",
+    "babel-preset-react": "6.11.1",
     "babelify": "~7.3.0",
     "autoprefixer": "~6.4.0",
     "postcss-cli": "~2.5.2"

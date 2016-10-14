@@ -15,7 +15,7 @@
     "build": "npm run build-js & npm run build-sass",
     "build-min": "npm run build-min-js & npm run build-min-sass",
     "watch": "npm run watch-js & npm run watch-sass",
-    "browser-sync": "browser-sync start --proxy '127.0.0.1:8000' --files './www/**/*'",
+    "browser-sync": "browser-sync start --proxy '127.0.0.1:8000' --files './www/**/*' 'src/views/**/*'",
     "start": "npm run clean-build && npm run prepare-build && npm run build-images && npm run build-js && npm run build-sass & npm run watch & npm run browser-sync",
     "production": "npm run build-min"
   },

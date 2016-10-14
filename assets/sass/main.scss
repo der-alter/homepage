@@ -15,18 +15,26 @@ body {
   height:280px
 }
 
-a {
-  color:#007bb9;
-  text-decoration:none;
-  font-weight: 700;
-  margin-right: 5px;
-  &:hover {
-    border-bottom:1px solid;
+.social-ids {
+  p {
+    display: inline-block;
   }
-}
 
-.icon {
-  width: 1em;
-  height: 1em;
-  fill: currentColor;
+  a {
+    color:#007bb9;
+    text-decoration:none;
+    font-weight: 700;
+    margin-right: 5px;
+    &:hover {
+      border-bottom:1px solid;
+    }
+  }
+
+  .icon {
+    display: inline-block;
+    vertical-align: middle;
+    width: 1.5em;
+    height: 1.5em;
+    fill: currentColor;
+  }
 }

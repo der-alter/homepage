@@ -10,6 +10,7 @@ use Symfony\Component\Asset\VersionStrategy\EmptyVersionStrategy;
 use Symfony\Component\Templating\Helper\SlotsHelper;
 use Monolog\Handler\RollbarHandler;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 $dotenv = new Dotenv\Dotenv(__DIR__.'/../');
 $dotenv->load();
@@ -41,7 +42,7 @@ $app->error(function (\Exception $e, Request $request, $code) use ($app) {
         return;
     }
 
-    if (404 == $code) {
+    if (Response::HTTP_NOT_FOUND == $code) {
         $subRequest = Request::create('/not-found', 'GET');
 
         return $app->handle($subRequest, \Symfony\Component\HttpKernel\HttpKernelInterface::SUB_REQUEST);
